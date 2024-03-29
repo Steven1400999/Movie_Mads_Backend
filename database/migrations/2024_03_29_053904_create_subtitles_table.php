@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('subtitles', function (Blueprint $table) {
             $table->id();
+            $table->string('language');
+
             $table->timestamps();
         });
     }

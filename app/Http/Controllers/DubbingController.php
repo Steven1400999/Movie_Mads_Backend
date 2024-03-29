@@ -12,7 +12,8 @@ class DubbingController extends Controller
      */
     public function index()
     {
-        //
+        $dubbing = Dubbing::all();
+        return $dubbing;
     }
 
     /**
@@ -28,15 +29,28 @@ class DubbingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dubbing = Dubbing::create([
+            'language' => $request->language,
+
+        ]);
+
+        $dubbing->save();
+        return $request;
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Dubbing $dubbing)
+    public function show(Request $request)
     {
-        //
+        $dubbing = Dubbing::where('id', $request->id)
+        ->orWhere('language' , $request->language)
+        ->get();
+
+
+        return response()->json($dubbing, 201);
+
     }
 
     /**
@@ -50,16 +64,26 @@ class DubbingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dubbing $dubbing)
+    public function update(Request $request)
     {
-        //
+        $dubbing = Dubbing::where('id', $request->id)->first();
+
+        $dubbing->update([
+            'language' => $request->language,
+        ]);
+
+        $dubbing->save();
+        return $dubbing;
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dubbing $dubbing)
+    public function destroy(Request $request)
     {
-        //
+        $dubbing = Dubbing::where('id', $request->id)->delete();
+        return $dubbing;
     }
 }

@@ -12,7 +12,8 @@ class UserSeatController extends Controller
      */
     public function index()
     {
-        //
+        $userSeats = User_seat::all();
+        return $userSeats;
     }
 
     /**
@@ -28,15 +29,22 @@ class UserSeatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $userSeat = User_seat::create([
+            'user_id' => $request->user_id,
+            'seat_id' => $request->seat_id,
+        ]);
+
+        $userSeat->save();
+        return $userSeat;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User_seat $user_seat)
+    public function show(Request $request)
     {
-        //
+        $userSeat = User_seat::where('id', $request->id)->first();
+        return $userSeat;
     }
 
     /**
@@ -50,16 +58,25 @@ class UserSeatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User_seat $user_seat)
+    public function update(Request $request)
     {
-        //
+        $userSeat = User_seat::where('id', $request->id)->first();
+
+        $userSeat->update([
+            'user_id' => $request->user_id,
+            'seat_id' => $request->seat_id,
+        ]);
+
+        $userSeat->save();
+        return $userSeat;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User_seat $user_seat)
+    public function destroy(Request $request)
     {
-        //
+        $userSeat = User_seat::where('id', $request->id)->delete();
+        return $userSeat;
     }
 }

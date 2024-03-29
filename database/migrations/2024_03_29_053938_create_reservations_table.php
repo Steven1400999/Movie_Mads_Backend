@@ -18,7 +18,8 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
-            $table->integer('seat_number');
+            $table->json('seats');
+            $table->string('qr_code')->nullable();
             $table->timestamps();
         });
     }

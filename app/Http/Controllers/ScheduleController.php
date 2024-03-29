@@ -12,7 +12,8 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        $schedule = Schedule::all();
+        return $schedule;
     }
 
     /**
@@ -28,15 +29,33 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $schedule = Schedule::create([
+            'movie_id' => $request->movie_id,
+            'time' => $request->time,
+            'room' => $request->room,
+            'total_capacity' => $request->total_capacity,
+            'available_seats' => $request->available_seats,
+        ]);
+
+        $schedule->save();
+        return $schedule;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Schedule $schedule)
+    public function show(Request $request)
     {
-        //
+        $schedule =  Schedule::where('id', $request->id)
+        ->orWhere('movie_id' , $request->movie_id)
+        ->orWhere('time' , $request->title)
+        ->orWhere('room' , $request->description)
+        ->orWhere('total_capacity' , $request->duration)
+        ->orWhere('available_seats' , $request->duration)
+        ->get();
+
+
+        return response()->json($schedule, 201);
     }
 
     /**
@@ -50,16 +69,28 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Schedule $schedule)
+    public function update(Request $request)
     {
-        //
+        $schedule = Schedule::where('id', $request->id)->first();
+
+        $schedule->update([
+            'movie_id' => $request->movie_id,
+            'time' => $request->time,
+            'room' => $request->room,
+            'total_capacity' => $request->total_capacity,
+            'available_seats' => $request->available_seats,
+        ]);
+
+        $schedule->save();
+        return $schedule;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Schedule $schedule)
+    public function destroy(Request $request)
     {
-        //
+        $schedule = Schedule::where('id', $request->id)->delete();
+        return $schedule;
     }
 }

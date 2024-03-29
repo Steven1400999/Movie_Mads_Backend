@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Dubbing extends Model
 {
     use HasFactory;
+    protected $fillable = ['language'];
+
+    public function movies()
+    {
+        return $this->hasMany(Movie::class);
+    }
+
 }

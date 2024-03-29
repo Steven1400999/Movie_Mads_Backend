@@ -8,4 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'movie_id',
+        'time',
+        'room',
+        'total_capacity',
+        'available_seats'
+    ];
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
 }

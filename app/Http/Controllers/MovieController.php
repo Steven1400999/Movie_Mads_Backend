@@ -12,7 +12,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        $movie = Movie::all();
+        return $movie;
     }
 
     /**
@@ -28,15 +29,31 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $movie = Movie::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'duration' => $request->duration,
+            'image' => $request->image,
+        ]);
+
+        $movie->save();
+        return $movie;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Movie $movie)
+    public function show(Request $request)
     {
-        //
+        
+        $movie = Movie::where('id', $request->id)
+        ->orWhere('title' , $request->title)
+        ->orWhere('description' , $request->description)
+        ->orWhere('duration' , $request->duration)
+        ->get();
+
+
+        return response()->json($movie, 201);
     }
 
     /**
@@ -50,16 +67,28 @@ class MovieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Movie $movie)
+    public function update(Request $request)
     {
-        //
+        $movie = Movie::where('id', $request->id)->first();
+
+        $movie->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'duration' => $request->duration,
+            'image' => $request->image,
+        ]);
+
+        $movie->save();
+        return $movie;
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Movie $movie)
+    public function destroy(Request $request)
     {
-        //
+        $movie = Movie::where('id', $request->id)->delete();
+        return $movie;
     }
 }

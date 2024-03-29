@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Subtitle extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['language'];
+
+    public function movies()
+    {
+        return $this->hasMany(Movie::class);
+    }
+
 }

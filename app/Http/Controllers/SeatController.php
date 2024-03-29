@@ -12,7 +12,8 @@ class SeatController extends Controller
      */
     public function index()
     {
-        //
+        $seats = Seat::all();
+        return $seats;
     }
 
     /**
@@ -28,15 +29,29 @@ class SeatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $seat = Seat::create([
+            'schedule_id' => $request->schedule_id,
+            'seat_number' => $request->seat_number,
+            'status' => $request->status,
+        ]);
+
+        $seat->save();
+        return $seat;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Seat $seat)
+    public function show(Request $request)
     {
-        //
+        $seat =  Seat::where('id', $request->id)
+        ->orWhere('schedule_id' , $request->schedule_id)
+        ->orWhere('seat_number' , $request->seat_number)
+        ->orWhere('status' , $request->status)
+        ->get();
+
+
+        return response()->json($seat, 201);
     }
 
     /**
@@ -50,16 +65,26 @@ class SeatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Seat $seat)
+    public function update(Request $request)
     {
-        //
+        $seat = Seat::where('id', $request->id)->first();
+
+        $seat->update([
+            'schedule_id' => $request->schedule_id,
+            'seat_number' => $request->seat_number,
+            'status' => $request->status,
+        ]);
+
+        $seat->save();
+        return $seat;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Seat $seat)
+    public function destroy(Request $request)
     {
-        //
+        $seat = Seat::where('id', $request->id)->delete();
+        return $seat;
     }
 }

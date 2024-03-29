@@ -12,7 +12,8 @@ class LanguageController extends Controller
      */
     public function index()
     {
-        //
+        $language = Language::all();
+        return $language;
     }
 
     /**
@@ -28,15 +29,26 @@ class LanguageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $language = Language::create([
+            'language' => $request->language,
+
+        ]);
+
+        $language->save();
+        return $request;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Language $language)
+    public function show(Request $request)
     {
-        //
+        $language = Language::where('id', $request->id)
+        ->orWhere('language' , $request->language)
+        ->get();
+
+
+        return response()->json($language, 201);
     }
 
     /**
@@ -50,16 +62,25 @@ class LanguageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Language $language)
+    public function update(Request $request)
     {
-        //
+        $language = Language::where('id', $request->id)->first();
+
+        $language->update([
+            'language' => $request->language,
+        ]);
+
+        $language->save();
+        return $language;
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Language $language)
+    public function destroy(Requestequest $request)
     {
-        //
+        $language = Language::where('id', $request->id)->delete();
+        return $language;
     }
 }

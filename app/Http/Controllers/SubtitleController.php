@@ -12,7 +12,8 @@ class SubtitleController extends Controller
      */
     public function index()
     {
-        //
+        $subtitle = Subtitle::all();
+        return $subtitle;
     }
 
     /**
@@ -28,15 +29,26 @@ class SubtitleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $subtitle = Subtitle::create([
+            'language' => $request->language,
+
+        ]);
+
+        $subtitle->save();
+        return $request;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Subtitle $subtitle)
+    public function show(Request $request)
     {
-        //
+        $subtitle = Subtitle::where('id', $request->id)
+        ->orWhere('language' , $request->language)
+        ->get();
+
+
+        return response()->json($subtitle, 201);
     }
 
     /**
@@ -50,16 +62,24 @@ class SubtitleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subtitle $subtitle)
+    public function update(Request $request)
     {
-        //
+        $subtitle = Subtitle::where('id', $request->id)->first();
+
+        $subtitle->update([
+            'language' => $request->language,
+        ]);
+
+        $subtitle->save();
+        return $subtitle;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Subtitle $subtitle)
+    public function destroy(Request $request)
     {
-        //
+        $subtitle = Subtitle::where('id', $request->id)->delete();
+        return $subtitle;
     }
 }

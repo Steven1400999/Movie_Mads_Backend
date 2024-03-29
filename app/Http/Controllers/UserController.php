@@ -83,4 +83,8 @@ class UserController extends Controller
         $user = User::where('id', $request->id)->delete();
         return $user;
     }
+
+    public function token(){
+        return csrf_token();
+    }
 }

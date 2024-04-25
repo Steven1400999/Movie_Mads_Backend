@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DubbingController;
@@ -12,13 +14,20 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSeatController;
 
 
+
+
 //User Controller
+
+
+
+Route::post('login', [RegisterController::class, 'login']);
+Route::post('register', [RegisterController::class, 'register']);
 Route::get('/user_index', [UserController::class, 'index']);
 Route::post('/user_update', [UserController::class, 'update']);
 Route::post('/user_destroy', [UserController::class, 'destroy']);
-Route::get('/token',[UserController::class, 'token']);
 
-// Route::post('register', [RegisterController::class, 'register']);
+
+
 
 
 //Dubbing Controller
@@ -31,14 +40,14 @@ Route::post('/dubbing_destroy', [DubbingController::class, 'destroy']);
 
 
 //Language Controller
-Route::get('/dubbing_index', [DubbingController::class, 'index']);
-Route::post('/dubbing_store', [DubbingController::class, 'store']);
-Route::get('/dubbing_show', [DubbingController::class, 'show']);
-Route::post('/dubbing_edit', [DubbingController::class, 'edit']);
-Route::post('/dubbing_update', [DubbingController::class, 'update']);
-Route::post('/dubbing_destroy', [DubbingController::class, 'destroy']);
+Route::get('/language_index', [LanguageController::class, 'index']);
+Route::post('/language_store', [LanguageController::class, 'store']);
+Route::get('/language_show', [LanguageController::class, 'show']);
+Route::post('/language_edit', [LanguageController::class, 'edit']);
+Route::post('/language_update', [LanguageController::class, 'update']);
+Route::post('/language_destroy', [LanguageController::class, 'destroy']);
 
-    
+
 //Movie Controller
 Route::get('/movie_index', [MovieController::class, 'index']);
 Route::post('/movie_store', [MovieController::class, 'store']);
@@ -90,6 +99,11 @@ Route::post('/user_seat_destroy', [UserSeatController::class, 'destroy']);
 
 
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+Route::middleware('auth:api')->group(function () {
+
+});
+
+
+Route::middleware(['auth:api'])->get('/user', function (Request $request) {
     return $request->user();
 });

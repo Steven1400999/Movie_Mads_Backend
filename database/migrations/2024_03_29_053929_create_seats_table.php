@@ -13,19 +13,29 @@ return new class extends Migration {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('schedule_id');
-
-            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
             $table->integer('seat_number');
-            $table->enum('status', ['occupied', 'available']);
+            $table->enum('status', ['occupied', 'available'])->default('available');
             $table->timestamps();
         });
+
+        DB::unprepared('
+            CREATE TRIGGER after_schedule_insert
+            AFTER INSERT ON schedules
+            FOR EACH ROW
+            BEGIN
+                DECLARE i INT DEFAULT 1;
+                WHILE i <= 50 DO
+                    INSERT INTO seats (schedule_id, seat_number, status, created_at, updated_at)
+                    VALUES (NEW.id, i, "available", NOW(), NOW());
+                    SET i = i + 1;
+                END WHILE;
+            END;
+        ');
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('seats');
+        DB::unprepared('DROP TRIGGER IF EXISTS after_schedule_insert');
     }
 };

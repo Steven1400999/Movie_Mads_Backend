@@ -11,10 +11,11 @@ class Schedule extends Model
 
     protected $fillable = [
         'movie_id',
-        'time',
+        'start_time',
+        'end_time',
         'room',
         'total_capacity',
-        'available_seats'
+        'available_seats',
     ];
 
     public function movie()
